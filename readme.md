@@ -9,12 +9,12 @@ Instantiate the logger using the following syntax:
 ```javascript
 let logger = new Logger(type, path, size);
 ```
-Where 
-`type` can be either ` file ` or ` console `
-`path` is the path of directory where you want to store the log files for example ```new Logger("file",  "logs", 10000); ```, this will make log files in the logs directory.
+Where <br>
+`type` can be either ` file ` or ` console `<br>
+`path` is the path of directory where you want to store the log files for example ```new Logger("file",  "logs", 10000); ```, this will make log files in the logs directory.<br>
 `size` is the size of file after which new log file will be created.
 
 ## Levels
-`error` used to log errors for example `logger.error("this is a error message")`
-`info` used to log information for example `logger.info("this is an info message")`
-`debug` used to debug for example `logger.debug("this is a debug message")`
+`error` used to log errors for example `logger.error("this is a error message")` <br>
+`info` used to log information for example `logger.info("this is an info message")` <br>
+`debug` used to debug for example `logger.debug("this is a debug message")` <br>
