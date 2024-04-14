@@ -11,7 +11,7 @@ let logger = new Logger({type, pathToLog, size});
 ```
 Where <br>
 `type` can be either ` file ` or ` console `<br>
-`path` is the path of directory where you want to store the log files for example ```new Logger("file",  "logs", 10000); ```, this will make log files in the logs directory.<br>
+`pathToLog` is the path of directory where you want to store the log files for example ```new Logger({type : "file",  pathToLog : path.join(__dirname, "/logs"), size : 10000}); ```, this will make log files in the logs directory.<br>
 `size` is the size of file after which new log file will be created.
 
 ## Levels
