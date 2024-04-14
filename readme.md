@@ -7,7 +7,7 @@ This is a simple JavaScript logger that provides basic functionality for logging
 Instantiate the logger using the following syntax:
 
 ```javascript
-let logger = new Logger(type, path, size);
+let logger = new Logger({type, pathToLog, size});
 ```
 Where <br>
 `type` can be either ` file ` or ` console `<br>
