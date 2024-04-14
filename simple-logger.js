@@ -6,7 +6,7 @@ class Logger {
   #pathToLog;
   #size;
   #currentFile;
-  constructor(type = 'console', pathToLog = path.join(__dirname, "/logs"), size = 5 * 1024 * 1024) {
+  constructor({ type = 'console', pathToLog = path.join(__dirname, "/logs"), size = 5 * 1024 * 1024 }) {
     this.#type = type;
     this.#pathToLog = pathToLog;
     this.#size = size;
