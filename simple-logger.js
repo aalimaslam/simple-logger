@@ -6,14 +6,15 @@ class Logger {
   #pathToLog;
   #size;
   #currentFile;
-  constructor({ type = 'console', pathToLog = path.join(__dirname, "/logs"), size = 5 * 1024 * 1024 }) {
+
+  constructor({ type = 'console', pathToLog = path.join(__dirname, "logs"), size = 5 * 1024 * 1024 }) {
     this.#type = type;
-    this.#pathToLog = pathToLog;
+    this.#pathToLog = path.resolve(pathToLog);
     this.#size = size;
     this.#currentFile = this.#getNewFile();
   }
 
-  #message = `[type] - date - message`;
+  #message = "[type] - [date] - [message]";
   #levels = ['error', 'debug', 'info'];
 
   #getNewFile() {
@@ -21,8 +22,7 @@ class Logger {
       fs.mkdirSync(this.#pathToLog, { recursive: true });
     }
 
-    let i = 0;
-    while (true) {
+    for (let i = 0; i < Number.MAX_SAFE_INTEGER; i++) { 
       const filePath = path.join(this.#pathToLog, `log${i}.log`);
       if (!fs.existsSync(filePath)) {
         fs.writeFileSync(filePath, '');
@@ -32,18 +32,21 @@ class Logger {
       if (stats.size < this.#size) {
         return fs.createWriteStream(filePath, { flags: 'a' });
       }
-      i++;
     }
+    throw new Error("Failed to create a new log file.");
   }
 
   #log(level, message) {
-    if (!(this.#levels.find((levels) => levels.toLowerCase() == level.toLowerCase()))) throw new Error("Invalid Type");
-    if (this.#pathToLog.split("").find((item) => item == '.')) throw new Error("Invalid Path")
-    const logMessage = `${this.#message.replace("type", level).replace("date", new Date().toISOString().split("T")[0] + " " + new Date().toISOString().split("T")[1].split("Z")[0]).replace("message", message.toString())}\n`;
-    if (this.#type == 'file') {
-      this.#currentFile.write(logMessage);
-      const stats = fs.statSync(this.#currentFile.path);
+    if (!this.#levels.includes(level.toLowerCase())) throw new Error("Invalid Log Level");
+    const logMessage = this.#message
+      .replace("[type]", level)
+      .replace("[date]", new Date().toISOString())
+      .replace("[message]", message.toString());
+    if (this.#type === 'file') {
+      this.#currentFile.write(logMessage + '\n');
+      const stats = fs.fstatSync(this.#currentFile.fd);
       if (stats.size >= this.#size) {
+        this.#currentFile.end();
         this.#currentFile = this.#getNewFile();
       }
     }
@@ -61,7 +64,6 @@ class Logger {
   debug(message) {
     this.#log("debug", message);
   }
-
 }
 
 module.exports = Logger;
