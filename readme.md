@@ -1,20 +1,60 @@
-# JavaScript Logger
+# Logged4node
 
-This is a simple JavaScript logger that provides basic functionality for logging messages to either a file or the console.
+A customizable logging utility for Node.js applications that supports both console and file-based logging with log rotation. This logger helps manage your log files efficiently by rotating files when they reach a specified size.
 
-## Usage
+## Features
 
-Instantiate the logger using the following syntax:
+- Log messages to both the console and file.
+- Supports different log levels: `info`, `debug`, and `error`.
+- Automatic log file rotation when files reach a specified size.
+- Customizable log directory and log file size.
+- Synchronous and asynchronous logging operations.
+
+## Installation
+
+```bash
+npm install logged4node
+```
+
+# Usage
 
 ```javascript
-let logger = new Logger({type, pathToLog, size});
-```
-Where <br>
-`type` can be either ` file ` or ` console `<br>
-`pathToLog` is the path of directory where you want to store the log files for example ```new Logger({type : "file",  pathToLog : path.join(__dirname, "/logs"), size : 10000}); ```, this will make log files in the logs directory.<br>
-`size` is the size of file after which new log file will be created.
+const Logger = require('logged4node');
 
-## Levels
-`error` used to log errors for example `logger.error("this is a error message")` <br>
-`info` used to log information for example `logger.info("this is an info message")` <br>
-`debug` used to debug for example `logger.debug("this is a debug message")` <br>
+const logger = new Logger({
+  type: 'file',               // Choose 'console' or 'file'
+  pathToLog: './logs',         // Directory where logs will be stored
+  size: 5 * 1024 * 1024        // Maximum log file size in bytes (default 5MB)
+});
+
+// Log messages at different levels
+logger.info('This is an info message');
+logger.error('This is an error message');
+logger.debug('This is a debug message');
+```
+
+# Example
+
+```javascript
+const Logger = require('logged4node');
+
+// Create a logger instance for file logging
+const logger = new Logger({
+  type: 'file',
+  pathToLog: './logs',          // Log files will be stored here
+  size: 2 * 1024 * 1024         // Each log file will be up to 2MB
+});
+
+// Log messages
+logger.info('Application started');
+logger.error('An error occurred');
+logger.debug('Debugging info');
+
+// For console logging
+const consoleLogger = new Logger({
+  type: 'console'
+});
+
+consoleLogger.info('This will log to the console');
+
+```
